@@ -1,14 +1,19 @@
 var express = require('express');
 var app = express();
 
-app.get('/api/:date', function(req,res){
+// enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
+// so that your API is remotely testable by FCC 
+var cors = require('cors');
+app.use(cors({ optionsSuccessStatus: 200 }));  // some legacy browsers choke on 204
+
+app.get('/api/:date', function(req, res) {
 
   //Get the query
   let query = req.params.date
-  
-  //Check if we can parse the query - if the query is parsable then 
+
+  //Check if we can parse the query - if the query is parsable
   let date = new Date(query)
-  if(date != "Invalid Date" ){
+  if (date != "Invalid Date") {
     console.log({
       query,
       unix: date.valueOf(),
@@ -18,8 +23,8 @@ app.get('/api/:date', function(req,res){
       unix: date.valueOf(),
       utc: date.toUTCString()
     })
-  } 
-  else if (!isNaN(parseInt(query))){
+  }
+  else if (!isNaN(parseInt(query))) {
     let date = new Date(parseInt(query))
     console.log({
       query,
@@ -30,7 +35,7 @@ app.get('/api/:date', function(req,res){
       unix: date.valueOf(),
       utc: date.toUTCString(),
     })
-  } 
+  }
   else if (query == null) {
     let date = new Date()
     console.log({
@@ -39,30 +44,30 @@ app.get('/api/:date', function(req,res){
       utc: date.toUTCString()
     })
     res.json({
-      unix : date.valueOf(),
+      unix: date.valueOf(),
       utc: date.toUTCString()
     })
-  } 
+  }
   else {
-    console.log({query, error:"Invalid Date"})
-    res.json({error:"Invalid Date"})
+    console.log({ query, error: "Invalid Date" })
+    res.json({ error: "Invalid Date" })
   }
 
 })
 
-//taking the unit test "A request to /api/1451001600000" seriously... 
-app.get('/api/1451001600000', function (req, res){
-  let date = new Date(1451001600000)
+//handle empty route
+/*app.get('/api/:', function(req, res) {
+  let date = new Date()
   console.log({
-      query,
-      unix: date.valueOf(),
-      utc: date.toUTCString()
-    })
-    res.json({
-      unix : date.valueOf(),
-      utc: date.toUTCString()
-    })
-})
+    query,
+    unix: date.valueOf(),
+    utc: date.toUTCString()
+  })
+  res.json({
+    unix: date.valueOf(),
+    utc: date.toUTCString()
+  })
+})*/
 
 module.exports = app
 
