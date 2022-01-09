@@ -6,11 +6,10 @@ var app = express();
 var cors = require('cors');
 app.use(cors({ optionsSuccessStatus: 200 }));  // some legacy browsers choke on 204
 
-app.get('/api/:date', function(req, res) {
+app.get('/api/:date?', function(req, res) {
 
   //Get the query
   let query = req.params.date
-
   //Check if we can parse the query - if the query is parsable
   let date = new Date(query)
   if (date != "Invalid Date") {
@@ -54,20 +53,6 @@ app.get('/api/:date', function(req, res) {
   }
 
 })
-
-//handle empty route
-/*app.get('/api/:', function(req, res) {
-  let date = new Date()
-  console.log({
-    query,
-    unix: date.valueOf(),
-    utc: date.toUTCString()
-  })
-  res.json({
-    unix: date.valueOf(),
-    utc: date.toUTCString()
-  })
-})*/
 
 module.exports = app
 
